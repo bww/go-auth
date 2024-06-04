@@ -93,10 +93,10 @@ func (a provider) Validate(realm acl.Realm, require acl.Scopes, req *http.Reques
 		return fmt.Errorf("%w: Claims have invalid format: %v < %v", auth.ErrForbidden, claims.Scopes, require)
 	}
 	if !claims.Realm.Contains(realm) {
-		return fmt.Errorf("%w: Claim context is not satisfied: %v < %v in %v", auth.ErrForbidden, claims.Scopes, require, realm)
+		return fmt.Errorf("%w: Claim realm is not satisfied: <%v> does not contain <%v>", auth.ErrForbidden, claims.Realm, realm)
 	}
 	if !claims.Scopes.Satisfies(require...) {
-		return fmt.Errorf("%w: Claim scopes are not satisfied: %v < %v in %v", auth.ErrForbidden, claims.Scopes, require, realm)
+		return fmt.Errorf("%w: Claim scopes are not satisfied: %v < %v in <%v>", auth.ErrForbidden, claims.Scopes, require, realm)
 	}
 	return nil
 }

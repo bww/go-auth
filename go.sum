@@ -9,10 +9,6 @@ github.com/beorn7/perks v1.0.0/go.mod h1:KWe93zE9D1o94FZ5RNwFwVgaQK1VOXiVxmqh+Ce
 github.com/beorn7/perks v1.0.1/go.mod h1:G2ZrVWU2WbWT9wwq4/hrbKbnv/1ERSJQ0ibhJ6rlkpw=
 github.com/bww/epl v1.0.0 h1:ND38rp+wL7VjbPx39vTOqTNzCBmCgw2eCZe1+l5Hiu8=
 github.com/bww/epl v1.0.0/go.mod h1:8CahovY2O3KqBUPSfiQzaSaNd6Bkn+SJH7L98/76vaI=
-github.com/bww/go-acl v0.1.0 h1:Roq5jV517HRuwh77Rj+S9QO1FYRApGURa4EatvJaWHg=
-github.com/bww/go-acl v0.1.0/go.mod h1:iPbhn5vIoNT+kkHFZxgLs64kT2W+v2hssJBXzy2bBxs=
-github.com/bww/go-acl v0.2.1 h1:kRoc5BPzgGHj+eRZYlGm9GwdQL5RIwvoPTVDbqKdpOY=
-github.com/bww/go-acl v0.2.1/go.mod h1:iPbhn5vIoNT+kkHFZxgLs64kT2W+v2hssJBXzy2bBxs=
 github.com/bww/go-acl v0.2.2 h1:o0CdG4dc/0WhW/ssyHIwKmxZ3ljXteLNDVSp7bj1fOA=
 github.com/bww/go-acl v0.2.2/go.mod h1:iPbhn5vIoNT+kkHFZxgLs64kT2W+v2hssJBXzy2bBxs=
 github.com/bww/go-alert v0.0.0-20180325011200-72270072a7e5/go.mod h1:tsrgzda5iuNbbbVRTPaUnXpHwh0qiWg//Xr7lSLV5X8=
@@ -24,6 +20,8 @@ github.com/bww/go-rest v1.9.0/go.mod h1:3v9NPpsxO1MtJ1ZxfvZ6mlOgZAzGC4yUVncD163q
 github.com/bww/go-router v1.6.0/go.mod h1:lP+Pg41Tkkxz29JwpgBiSocoCNQLMVxj5hevMb0B6k0=
 github.com/bww/go-router v1.9.0 h1:kuwyVmSd66bB08SC1vzwmbtO+82ZYYCokzraYuOSSmo=
 github.com/bww/go-router v1.9.0/go.mod h1:lP+Pg41Tkkxz29JwpgBiSocoCNQLMVxj5hevMb0B6k0=
+github.com/bww/go-router/v2 v2.2.0 h1:4Jr3vq87bDfuR2/enzKNQPCx2wDWR3mXMG3zNvJUs7M=
+github.com/bww/go-router/v2 v2.2.0/go.mod h1:pHA59OkxcVuN6BDKaY5btuqMjLmg6IchFojHdjH/e9E=
 github.com/bww/go-util v1.0.0/go.mod h1:eetI2LVCZPc50RTF1gSbNonGRWlT7UARNoILqCW2on8=
 github.com/bww/go-util v1.34.0 h1:gMqAmdbcmRxIHMzeNFxyiUnzEolr3MUhKzBAiS0IaoA=
 github.com/bww/go-util v1.34.0/go.mod h1:3r0VQkxy8ToiXSjDi5gt+/BLz7h6ybS3Wbrz/fQId/k=
