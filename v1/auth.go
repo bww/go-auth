@@ -13,7 +13,9 @@ var (
 )
 
 type Authorizer interface {
-	Assert(acl.Scopes, []byte) error
-	Authorize(acl.Scopes, *http.Request) error
-	Verify(acl.Scopes, *http.Request) error
+	Authorize(acl.Realm, acl.Scopes, *http.Request) error
+}
+
+type Validator interface {
+	Validate(acl.Realm, acl.Scopes, *http.Request) error
 }

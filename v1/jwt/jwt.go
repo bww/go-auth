@@ -21,18 +21,19 @@ const (
 
 type Claims struct {
 	jwt.RegisteredClaims
+	Realm  acl.Realm  `json:"realm,omitempty"`
 	Scopes acl.Scopes `json:"scopes,omitempty"`
 }
 
-type authorizer struct {
+type provider struct {
 	secret []byte
 }
 
-func New(secret []byte) authorizer {
-	return authorizer{secret}
+func New(secret []byte) provider {
+	return provider{secret}
 }
 
-func (a authorizer) keyfunc(tok *jwt.Token) (interface{}, error) {
+func (a provider) keyfunc(tok *jwt.Token) (interface{}, error) {
 	now := time.Now()
 	if _, ok := tok.Method.(*jwt.SigningMethodHMAC); !ok {
 		return nil, fmt.Errorf("%w: Unexpected signing method: %v", auth.ErrUnauthorized, tok.Header["alg"])
@@ -45,33 +46,17 @@ func (a authorizer) keyfunc(tok *jwt.Token) (interface{}, error) {
 	return a.secret, nil
 }
 
-func (a authorizer) Assert(require acl.Scopes, authorization []byte) error {
-	tok, err := jwt.ParseWithClaims(string(authorization), &Claims{}, a.keyfunc)
-	if errors.Is(err, jwt.ErrSignatureInvalid) {
-		return fmt.Errorf("%w: Invalid signature", auth.ErrUnauthorized)
-	} else if err != nil {
-		return err
-	}
-	if tok == nil || !tok.Valid {
-		return fmt.Errorf("%w: Invalid token", auth.ErrUnauthorized)
-	}
-	if claims := tok.Claims.(*Claims); claims.Scopes.Satisfies(require...) {
-		return nil
-	} else {
-		return fmt.Errorf("%w: Claims are not satisfied: %v < %v", auth.ErrForbidden, claims.Scopes, require)
-	}
-}
-
-func (a authorizer) Sign(claims *Claims) (string, error) {
+func (a provider) Sign(claims *Claims) (string, error) {
 	return jwt.NewWithClaims(jwt.SigningMethodHS256, claims).SignedString(a.secret)
 }
 
-func (a authorizer) Authorize(scopes acl.Scopes, req *http.Request) error {
+func (a provider) Authorize(realm acl.Realm, scopes acl.Scopes, req *http.Request) error {
 	tok, err := a.Sign(&Claims{
 		RegisteredClaims: jwt.RegisteredClaims{
 			ID:       ident.New().String(),
 			IssuedAt: jwt.NewNumericDate(time.Now()),
 		},
+		Realm:  realm,
 		Scopes: scopes,
 	})
 	if err != nil {
@@ -80,12 +65,12 @@ func (a authorizer) Authorize(scopes acl.Scopes, req *http.Request) error {
 	return a.authorize(tok, req)
 }
 
-func (a authorizer) authorize(tok string, req *http.Request) error {
+func (a provider) authorize(tok string, req *http.Request) error {
 	req.Header.Set(header, prefix+tok)
 	return nil
 }
 
-func (a authorizer) Verify(require acl.Scopes, req *http.Request) error {
+func (a provider) Validate(realm acl.Realm, require acl.Scopes, req *http.Request) error {
 	v := req.Header.Get(header)
 	if v == "" {
 		return auth.ErrUnauthorized
@@ -93,5 +78,25 @@ func (a authorizer) Verify(require acl.Scopes, req *http.Request) error {
 	if !strings.HasPrefix(v, prefix) {
 		return fmt.Errorf("%w: Invalid authorization method", auth.ErrUnauthorized)
 	}
-	return a.Assert(require, []byte(v[len(prefix):]))
+	authdata := []byte(v[len(prefix):])
+	tok, err := jwt.ParseWithClaims(string(authdata), &Claims{}, a.keyfunc)
+	if errors.Is(err, jwt.ErrSignatureInvalid) {
+		return fmt.Errorf("%w: Invalid signature", auth.ErrUnauthorized)
+	} else if err != nil {
+		return err
+	}
+	if tok == nil || !tok.Valid {
+		return fmt.Errorf("%w: Invalid token", auth.ErrUnauthorized)
+	}
+	claims, ok := tok.Claims.(*Claims)
+	if !ok {
+		return fmt.Errorf("%w: Claims have invalid format: %v < %v", auth.ErrForbidden, claims.Scopes, require)
+	}
+	if !claims.Realm.Contains(realm) {
+		return fmt.Errorf("%w: Claim context is not satisfied: %v < %v in %v", auth.ErrForbidden, claims.Scopes, require, realm)
+	}
+	if !claims.Scopes.Satisfies(require...) {
+		return fmt.Errorf("%w: Claim scopes are not satisfied: %v < %v in %v", auth.ErrForbidden, claims.Scopes, require, realm)
+	}
+	return nil
 }
