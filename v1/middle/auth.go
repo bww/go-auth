@@ -7,7 +7,7 @@ import (
 	"github.com/bww/go-auth/v1"
 
 	"github.com/bww/go-acl/v1"
-	"github.com/bww/go-rest/v1/errors"
+	"github.com/bww/go-rest/v2/errors"
 	"github.com/bww/go-router/v2"
 )
 
