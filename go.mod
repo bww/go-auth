@@ -3,7 +3,7 @@ module github.com/bww/go-auth
 go 1.22.3
 
 require (
-	github.com/bww/go-acl v0.2.2
+	github.com/bww/go-acl v0.2.4
 	github.com/bww/go-ident v0.1.0
 	github.com/bww/go-rest v1.9.0
 	github.com/bww/go-router/v2 v2.2.0
