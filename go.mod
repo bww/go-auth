@@ -4,7 +4,7 @@ go 1.22.3
 
 require (
 	github.com/bww/go-acl v0.2.4
-	github.com/bww/go-ident v0.1.0
+	github.com/bww/go-ident v0.2.0
 	github.com/bww/go-rest/v2 v2.0.4
 	github.com/bww/go-router/v2 v2.4.3
 	github.com/bww/go-util v1.38.0
@@ -16,7 +16,7 @@ require (
 require (
 	github.com/bww/epl v1.1.1 // indirect
 	github.com/bww/go-validate v1.10.0 // indirect
-	github.com/bww/go-xid v0.1.1 // indirect
+	github.com/bww/go-xid v0.2.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/hashicorp/golang-lru/v2 v2.0.2 // indirect
 	github.com/kr/pretty v0.1.0 // indirect
